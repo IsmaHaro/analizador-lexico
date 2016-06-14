@@ -40,8 +40,8 @@ $palabras_reservadas = ['leer',
 
 $simbolos = ['.', ',', ';', '<', '>', '=', '"', '+', '*', '-', '/', '&', '|', '~'];
 
-$estados_aceptacion = [3 => "IDENTIFICADOR",
-                       7 => "CADENA",
+$estados_aceptacion = [3  => "IDENTIFICADOR",
+                       7  => "CADENA",
                        12 => "COMENTARIO",
                        15 => "COMENTARIO",
                        16 => "OP_DIVISION",
@@ -62,21 +62,24 @@ $estados_aceptacion = [3 => "IDENTIFICADOR",
                        37 => "AND",
                        38 => "OR",
                        39 => "NOT",
-                       42 => "FLOTANTE"
-                       ];
+                       42 => "FLOTANTE"];
 
 $matriz_trancisiones = [1 => ["letra" => 2, "digito" => 17, "," => 27, ";" => 28, "<" => 32, ">" => 29, "=" => 25, '"' => 4, "+" => 19, "-" => 22, "*" => 26, "/" => 8, "&" => 37, "|" => 38, "~" => 39],
                         2 => ["letra" => 2, "digito" => 17, "," => 27, ";" => 28, "<" => 32, ">" => 29, "=" => 25, '"' => 4, "+" => 19, "-" => 22, "*" => 26, "/" => 8, "&" => 37, "|" => 38, "~" => 39],
-
                         ];
 
+//analizador_lexico($archivo);
+//echo checar_tipo_caracter("\n")."\n";
+//print_r($matriz_trancisiones[1]);
 
-print_r($matriz_trancisiones[1]);
+$a = in_array("letra", $matriz_trancisiones[1]);
+echo $a."\n";
 
 function analizador_lexico($archivo){
     /*
      * Longitud del archivo
      */
+    global $matriz_trancisiones;
     $longitud_archivo = strlen($archivo);
     $estado = 1;
     $elemento = array();
@@ -91,20 +94,21 @@ function analizador_lexico($archivo){
          * Checar que tipo de caracter es
          */
         $tipo = checar_tipo_caracter($char);
+echo $tipo;
 
-        /*
-         * Obtener la columna que debemos de checar
-         */
+//echo $estado."\n";
+
         if(in_array($tipo, $matriz_trancisiones[$estado])){
+echo in_array($tipo, $matriz_trancisiones[$estado]);
             array_push($elemento, $char);
             $estado = $matriz_trancisiones[$estado][$tipo];
-
+echo $estado."\n";
             /*
              * Checar estados final
              */
 
         }else{
-            $estado   = 0;
+            //$estado   = 0;
             $elemento = array();
             echo "Error";
         }
@@ -118,15 +122,15 @@ function checar_tipo_caracter($char){
         return "digito";
     }
 
+    if(in_array($char, $simbolos)){
+        return $char;
+    }
+
     if(is_string($char)){
         return "letra";
     }
 
-    if(!in_array($char, $simbolos)){
-        return "otro";
-    }
-
-    return $char;
+    return "otro";
 }
 
 function es_palabra_reservada($palabra){
