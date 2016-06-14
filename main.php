@@ -2,23 +2,8 @@
 <?php
 $archivo = file_get_contents('compiladores.txt');
 
-$palabras_reservadas = ['leer',
-                       'escribir',
-                       'si',
-                       'sino',
-                       'finsi',
-                       'para',
-                       'finpara',
-                       'mientras',
-                       'finmientras',
-                       'repetir',
-                       'segun',
-                       'hacer',
-                       'finsegun',
-                       'hasta',
-                       'algoritmo',
-                       'inicio',
-                       'entonces'];
+$palabras_reservadas = ['leer', 'escribir', 'si', 'sino', 'finsi', 'para','finpara','mientras','finmientras',
+                       'repetir','segun','hacer','finsegun','hasta','algoritmo','inicio','entonces'];
 
 //$posiciones_simbolos = ['letra' => 0,
 //                        'digito' => 1,
@@ -66,11 +51,15 @@ $estados_aceptacion = [3  => "IDENTIFICADOR",
                        39 => "NOT",
                        42 => "FLOTANTE"];
 
-$matriz_trancisiones = [1 => ["letra" => 2, "digito" => 17, "," => 27, ";" => 28, "<" => 32, ">" => 29, "=" => 25, '"' => 4, "+" => 19, "-" => 22, "*" => 26, "/" => 8, "&" => 37, "|" => 38, "~" => 39],
-                        2 => ["letra" => 2, "digito" => 2 , "." => 3 , "," => 3 , ";" => 3 , "<" => 3 , ">" => 3 , "=" => 3, '"' => 3 , "+" => 3 , "-" => 3 , "*" => 3, "/" => 3 , "&" => 3 , "|" => 3 , "~" => 3, "otro" => 3],
-                        4 => ["letra" => 5, "digito" => 5],
-                        5 => ["letra" => 5, "digito" => 5 , '"'      => 6],
-                        6 => ["letra" => 7, "digito" => 7 , "." => 7 , "," => 7 , ";" => 7 , "<" => 7 , ">" => 7 , "=" => 7, '"' => 7 , "+" => 7 , "-" => 7 , "*" => 7, "/" => 7 , "&" => 7 , "|" => 7 , "~" => 7, "otro" => 7],
+$matriz_trancisiones = [1  => ["letra" => 2, "digito"  => 17, "," => 27, ";" => 28, "<" => 32, ">" => 29, "=" => 25, '"' => 4, "+" => 19, "-" => 22, "*" => 26, "/" => 8, "&" => 37, "|" => 38, "~" => 39],
+                        2  => ["letra" => 2, "digito"  => 2 , "." => 3 , "," => 3 , ";" => 3 , "<" => 3 , ">" => 3 , "=" => 3, '"' => 3 , "+" => 3 , "-" => 3 , "*" => 3, "/" => 3 , "&" => 3 , "|" => 3 , "~" => 3, "otro" => 3],
+                        4  => ["letra" => 5, "digito"  => 5],
+                        5  => ["letra" => 5, "digito"  => 5 , '"'      => 6],
+                        6  => ["letra" => 7, "digito"  => 7 , "." => 7 , "," => 7 , ";" => 7 , "<" => 7 , ">" => 7 , "=" => 7, '"' => 7 , "+" => 7 , "-" => 7 , "*" => 7, "/" => 7 , "&" => 7 , "|" => 7 , "~" => 7, "otro" => 7],
+                        8  => ["letra" => 16, "digito" => 16, "." => 16, "," => 16, ";" => 16, "<" => 16, ">" => 16, "=" => 16, '"' => 16, "+" => 16, "-" => 16 , "*" => 9, "/" => 13 , "&" => 16, "|" => 16, "~" => 16, "otro" => 16],
+                        9  => ["letra" => 10, "digito" => 10],
+                        10 => ["letra" => 10, "digito" => 10, "*" => 11],
+                        11 => ["/" => 12],
                         ];
 
 function imprimir($valor){
