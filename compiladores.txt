@@ -1,2 +1,2 @@
 Algoritmo
-escribir leer Mientras hola "2adios2" /*hola*/
+escribir leer Mientras hola " 2adio  2" /* hola */
