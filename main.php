@@ -67,7 +67,7 @@ $estados_aceptacion = [3  => "IDENTIFICADOR",
                        42 => "FLOTANTE"];
 
 $matriz_trancisiones = [1 => ["letra" => 2, "digito" => 17, "," => 27, ";" => 28, "<" => 32, ">" => 29, "=" => 25, '"' => 4, "+" => 19, "-" => 22, "*" => 26, "/" => 8, "&" => 37, "|" => 38, "~" => 39],
-                        2 => ["letra" => 2, "digito" => 17, "," => 27, ";" => 28, "<" => 32, ">" => 29, "=" => 25, '"' => 4, "+" => 19, "-" => 22, "*" => 26, "/" => 8, "&" => 37, "|" => 38, "~" => 39],
+                        2 => ["letra" => 2, "digito" => 2 , "." => 3 , "," => 3 , ";" => 3 , "<" => 3 , ">" => 3 , "=" => 3, '"' => 3 , "+" => 3 , "-" => 3 , "*" => 3, "/" => 3 , "&" => 3 , "|" => 3 , "~" => 3, "otro" => 3],
                         ];
 
 function imprimir($valor){
@@ -109,16 +109,14 @@ function analizador_lexico($archivo){
          * Checar que tipo de caracter es
          */
         $tipo = checar_tipo_caracter($char);
-imprimir($tipo." - ".$char."\n");
 
         if(array_key_exists($tipo, $matriz_trancisiones[$estado])){
             array_push($elemento, $char);
             $estado = $matriz_trancisiones[$estado][$tipo];
-
             /*
              * Checar si es un estado de aceptacion
              */
-            if(in_array($estado, $estados_aceptacion)){
+            if(array_key_exists($estado, $estados_aceptacion)){
                 /*
                  * Obtener estado de aceptacion
                  */
@@ -130,15 +128,17 @@ imprimir($tipo." - ".$char."\n");
                  * si es o no una palabra reservada
                  */
                 if($token['token'] == "IDENTIFICADOR"){
-                    if(in_array($token['valor'], $palabras_reservadas)){
+                    if(in_array(strtolower(trim($token['valor'])), $palabras_reservadas)){
                         $token['token'] = "PALABRA_RESERVADA";
                     }
+
                 }
 
                 /*
                  * Imprimir el elemento (token, valor)
                  */
                 imprimir("----------------------------------------");
+                imprimir("ACEPTADO");
                 imprimir($token);
                 imprimir("----------------------------------------");
 
