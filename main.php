@@ -68,18 +68,28 @@ $matriz_trancisiones = [1 => ["letra" => 2, "digito" => 17, "," => 27, ";" => 28
                         2 => ["letra" => 2, "digito" => 17, "," => 27, ";" => 28, "<" => 32, ">" => 29, "=" => 25, '"' => 4, "+" => 19, "-" => 22, "*" => 26, "/" => 8, "&" => 37, "|" => 38, "~" => 39],
                         ];
 
-//analizador_lexico($archivo);
+function imprimir($valor){
+	if(is_array($valor)){
+		echo '<pre>';
+		print_r($valor);
+		echo '</pre>';
+
+	}else{
+		echo $valor."\n";
+	}
+}
+analizador_lexico($archivo);
 //echo checar_tipo_caracter("\n")."\n";
 //print_r($matriz_trancisiones[1]);
 
-$a = in_array("letra", $matriz_trancisiones[1]);
-echo $a."\n";
+//$a = array_key_exists("letra", $matriz_trancisiones[1]);
+//echo $a."\n";
 
 function analizador_lexico($archivo){
     /*
      * Longitud del archivo
      */
-    global $matriz_trancisiones;
+    global $matriz_trancisiones, $estados_aceptacion, $palabras_reservadas;
     $longitud_archivo = strlen($archivo);
     $estado = 1;
     $elemento = array();
@@ -94,18 +104,48 @@ function analizador_lexico($archivo){
          * Checar que tipo de caracter es
          */
         $tipo = checar_tipo_caracter($char);
-echo $tipo;
+imprimir($tipo);
 
 //echo $estado."\n";
 
-        if(in_array($tipo, $matriz_trancisiones[$estado])){
-echo in_array($tipo, $matriz_trancisiones[$estado]);
+        if(array_key_exists($tipo, $matriz_trancisiones[$estado])){
             array_push($elemento, $char);
             $estado = $matriz_trancisiones[$estado][$tipo];
-echo $estado."\n";
+
             /*
-             * Checar estados final
+             * Checar si es un estado de aceptacion
              */
+            if(in_array($estado, $estados_aceptacion)){
+                /*
+                 * Obtener estado de aceptacion
+                 */
+                $token['token'] = $estados_aceptacion[$estado];
+                $token['valor'] = implode("", $elemento);
+
+                /*
+                 * Si es un identificador debemos corroborar
+                 * si es o no una palabra reservada
+                 */
+                if($token['token'] == "IDENTIFICADOR"){
+                    if(in_array($token['valor'], $palabras_reservadas)){
+                        $token['token'] = "PALABRA_RESERVADA";
+                    }
+                }
+
+                /*
+                 * Imprimir el elemento (token, valor)
+                 */
+                imprimir("----------------------------------------");
+                imprimir($token);
+                imprimir("----------------------------------------");
+
+                /*
+                 * Vaciar elemento para volver a construir otro
+                 */
+                $elemento = array();
+            }
+
+
 
         }else{
             //$estado   = 0;
