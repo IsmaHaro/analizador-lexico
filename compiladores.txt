@@ -1,2 +1,3 @@
-Algoritmo
-escribir leer Mientras hola " 2adio  2" /* hola */
+Si (A > B)
+Entonces
+ Escribir "Es mayor";
