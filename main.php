@@ -100,6 +100,7 @@ function analizador_lexico($archivo){
     $estado           = 1;
     $elemento         = array();
     $resultado        = array();
+    $band             = false;
 
     /*
      * Leer caracter por caracter
@@ -108,6 +109,12 @@ function analizador_lexico($archivo){
         /*
          * Obtener caracter
          */
+        if($band){
+            $i--;
+            $char = substr( $archivo, $i, 1 );
+            $band = false;
+        }
+
         $char = substr( $archivo, $i, 1 );
 
         /*
@@ -133,10 +140,14 @@ function analizador_lexico($archivo){
                  * si es o no una palabra reservada
                  */
                 if($token['token'] == "IDENTIFICADOR"){
-                    if(in_array(strtolower(trim($token['valor'])), $palabras_reservadas)){
+                    if(in_array(strtolower($token['valor']), $palabras_reservadas)){
                         $token['token'] = "PALABRA_RESERVADA";
                     }
+                }
 
+                if($token['token'] == "IDENTIFICADOR" or $token['token'] == "CADENA"){
+                    $token['valor'] = substr($token['valor'], 0, -1);
+                    $band = true;
                 }
 
                 /*
@@ -156,8 +167,6 @@ function analizador_lexico($archivo){
                 $elemento = array();
                 $estado   = 1;
             }
-
-
 
         }else{
             /*
