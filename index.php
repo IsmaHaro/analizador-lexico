@@ -74,6 +74,11 @@ $matriz_trancisiones = [1  => ["letra" => 2, "digito"  => 17, "," => 27, ";" => 
                         41 => ["letra" => 42, "digito" => 41, "." => 42, "," => 42, ";" => 42, "<" => 42, ">" => 42, "=" => 42, '"' => 42, "+" => 42, "-" => 42, "*" => 42, "/" => 42, "&" => 42, "|" => 42, "~" => 42, "(" => 42, ")" => 42, "otro" => 42],
                         ];
 
+/*
+ * LLamamos a la funcion principal e iniciamos
+ */
+analizador_lexico($archivo);
+
 function imprimir($valor){
 	if(is_array($valor)){
 		echo '<pre>';
@@ -84,12 +89,6 @@ function imprimir($valor){
 		echo $valor."\n";
 	}
 }
-analizador_lexico($archivo);
-//echo checar_tipo_caracter("\n")."\n";
-//print_r($matriz_trancisiones[1]);
-
-//$a = array_key_exists("letra", $matriz_trancisiones[1]);
-//echo $a."\n";
 
 function analizador_lexico($archivo){
     /*
