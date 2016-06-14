@@ -40,6 +40,8 @@ $palabras_reservadas = ['leer',
 
 $simbolos = ['.', ',', ';', '<', '>', '=', '"', '+', '*', '-', '/', '&', '|', '~'];
 
+$otros = ["\n", " "];
+
 $estados_aceptacion = [3  => "IDENTIFICADOR",
                        7  => "CADENA",
                        12 => "COMENTARIO",
@@ -98,15 +100,16 @@ function analizador_lexico($archivo){
      * Leer caracter por caracter
      */
     for($i = 0; $i <= $longitud_archivo; $i++){
+        /*
+         * Obtener caracter
+         */
         $char = substr( $archivo, $i, 1 );
 
         /*
          * Checar que tipo de caracter es
          */
         $tipo = checar_tipo_caracter($char);
-imprimir($tipo);
-
-//echo $estado."\n";
+imprimir($tipo." - ".$char."\n");
 
         if(array_key_exists($tipo, $matriz_trancisiones[$estado])){
             array_push($elemento, $char);
@@ -141,22 +144,32 @@ imprimir($tipo);
 
                 /*
                  * Vaciar elemento para volver a construir otro
+                 * y resetear estado
                  */
+                $token    = array();
                 $elemento = array();
+                $estado   = 1;
             }
 
 
 
         }else{
-            //$estado   = 0;
+            /*
+             * Imprimir el elemento (token, valor)
+             */
+            imprimir("----------------------------------------");
+            imprimir("ERROR");
+            imprimir($elemento);
+            imprimir("----------------------------------------");
+
+            $estado   = 1;
             $elemento = array();
-            echo "Error";
         }
     }
 }
 
 function checar_tipo_caracter($char){
-    global $simbolos;
+    global $simbolos, $otros;
 
     if(is_numeric($char)){
         return "digito";
@@ -166,11 +179,13 @@ function checar_tipo_caracter($char){
         return $char;
     }
 
+    if(in_array($char, $otros)){
+        return "otro";
+    }
+
     if(is_string($char)){
         return "letra";
     }
-
-    return "otro";
 }
 
 function es_palabra_reservada($palabra){
