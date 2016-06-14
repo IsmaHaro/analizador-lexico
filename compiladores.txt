@@ -1,1 +1,1 @@
-escribir leer Mientras hola
+escribir leer Mientras hola "adios"
