@@ -97,8 +97,9 @@ function analizador_lexico($archivo){
      */
     global $matriz_trancisiones, $estados_aceptacion, $palabras_reservadas;
     $longitud_archivo = strlen($archivo);
-    $estado = 1;
-    $elemento = array();
+    $estado           = 1;
+    $elemento         = array();
+    $resultado        = array();
 
     /*
      * Leer caracter por caracter
@@ -141,10 +142,11 @@ function analizador_lexico($archivo){
                 /*
                  * Imprimir el elemento (token, valor)
                  */
-                imprimir("----------------------------------------");
-                imprimir("ACEPTADO");
-                imprimir($token);
-                imprimir("----------------------------------------");
+                //imprimir("----------------------------------------");
+                //imprimir("ACEPTADO");
+                //imprimir($token);
+                //imprimir("----------------------------------------");
+                array_push($resultado, $token);
 
                 /*
                  * Vaciar elemento para volver a construir otro
@@ -161,15 +163,20 @@ function analizador_lexico($archivo){
             /*
              * Imprimir el elemento (token, valor)
              */
-            imprimir("----------------------------------------");
-            imprimir("ERROR");
-            imprimir($elemento);
-            imprimir("----------------------------------------");
+            //imprimir("----------------------------------------");
+            //imprimir("ERROR");
+            //imprimir($elemento);
+            //imprimir("----------------------------------------");
+            $token['valor'] = implode("", $elemento);
+            $token['token'] = "ERROR";
+            array_push($resultado, $token);
 
             $estado   = 1;
             $elemento = array();
         }
     }
+
+    imprimir($resultado);
 }
 
 function checar_tipo_caracter($char){
