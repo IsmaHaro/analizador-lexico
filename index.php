@@ -3,7 +3,7 @@
 $archivo = file_get_contents('compiladores.txt');
 
 $palabras_reservadas = ['leer', 'escribir', 'si', 'sino', 'finsi', 'para','finpara','mientras','finmientras',
-                       'repetir','segun','hacer','finsegun','hasta','algoritmo','inicio','entonces'];
+                       'repetir','segun','hacer','finsegun','hasta','algoritmo','inicio','entonces', 'hastaque'];
 
 //$posiciones_simbolos = ['letra' => 0,
 //                        'digito' => 1,
@@ -56,8 +56,8 @@ $estados_aceptacion = [3  => "IDENTIFICADOR",
 
 $matriz_trancisiones = [1  => ["letra" => 2, "digito"  => 17, "," => 27, ";" => 28, "<" => 32, ">" => 29, "=" => 25, '"' => 4, "+" => 19, "-" => 22, "*" => 26, "/" => 8, "&" => 37, "|" => 38, "~" => 39, "(" => 43, ")" => 44],
                         2  => ["letra" => 2, "digito"  => 2 , "." => 3 , "," => 3 , ";" => 3 , "<" => 3 , ">" => 3 , "=" => 3, '"' => 3 , "+" => 3 , "-" => 3 , "*" => 3, "/" => 3 , "&" => 3 , "|" => 3 , "~" => 3, "(" => 3, ")" => 3, "otro" => 3],
-                        4  => ["letra" => 5, "digito"  => 5 , "." => 4 , "otro" => 5, '"' => 6],
-                        5  => ["letra" => 5, "digito"  => 5 , "." => 4 , "otro" => 5, '"' => 6],
+                        4  => ["letra" => 5, "digito"  => 5 , "." => 5 , "," => 5 , ";" => 5 , "<" => 5 , ">" => 5 , "=" => 5, '"' => 6 , "+" => 5 , "-" => 5 , "*" => 5, "/" => 5 , "&" => 5 , "|" => 5 , "~" => 5, "(" => 5, ")" => 5, "otro" => 5],
+                        5  => ["letra" => 5, "digito"  => 5 , "." => 5 , "," => 5 , ";" => 5 , "<" => 5 , ">" => 5 , "=" => 5, '"' => 6 , "+" => 5 , "-" => 5 , "*" => 5, "/" => 5 , "&" => 5 , "|" => 5 , "~" => 5, "(" => 5, ")" => 5, "otro" => 5],
                         6  => ["letra" => 7, "digito"  => 7 , "." => 7 , "," => 7 , ";" => 7 , "<" => 7 , ">" => 7 , "=" => 7, '"' => 7 , "+" => 7 , "-" => 7 , "*" => 7, "/" => 7 , "&" => 7 , "|" => 7 , "~" => 7, "(" => 7, ")" => 7, "otro" => 7],
                         8  => ["letra" => 16, "digito" => 16, "." => 16, "," => 16, ";" => 16, "<" => 16, ">" => 16, "=" => 16, '"' => 16, "+" => 16, "-" => 16 , "*" => 9, "/" => 13 , "&" => 16, "|" => 16, "~" => 16, "(" => 16, ")" => 16, "otro" => 16],
                         9  => ["letra" => 10, "digito" => 10, "otro" => 10],
@@ -124,7 +124,8 @@ function analizador_lexico($archivo){
 
         if(array_key_exists($tipo, $matriz_trancisiones[$estado])){
             array_push($elemento, $char);
-            $estado = $matriz_trancisiones[$estado][$tipo];
+			$estadoA = $estado;
+            $estado  = $matriz_trancisiones[$estado][$tipo];
             /*
              * Checar si es un estado de aceptacion
              */
@@ -132,6 +133,8 @@ function analizador_lexico($archivo){
                 /*
                  * Obtener estado de aceptacion
                  */
+				$token['estadoAnterior'] = $estadoA;
+				$token['estadoPosterior'] = $estado;
                 $token['token'] = $estados_aceptacion[$estado];
                 $token['valor'] = implode("", $elemento);
 
@@ -145,7 +148,7 @@ function analizador_lexico($archivo){
                     }
                 }
 
-                if($token['token'] == "IDENTIFICADOR" or $token['token'] == "CADENA"){
+                if($token['token'] == "IDENTIFICADOR" or $token['token'] == "CADENA" or $token['token'] == "ENTERO" or $token['token'] == "OP_SUMA" or $token['token'] == "OP_RESTA"){
                     $token['valor'] = substr($token['valor'], 0, -1);
                     $band = true;
                 }

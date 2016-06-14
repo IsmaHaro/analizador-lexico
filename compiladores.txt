@@ -1,3 +1,8 @@
-Si (A > B)
-Entonces
- Escribir "Es mayor";
+Escribir "Ingrese un número (0 para salir)";
+Leer a;
+Mientras (a<>0) Hacer
+ Tot <- Tot+a;
+ Escribir "Ingrese otro número (0 para salir)";
+ Leer a;
+FinMientras
+Escribir "Total:",Tot;
