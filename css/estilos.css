@@ -27,6 +27,14 @@
   background: #eff0f1;
 }
 
+.pumpkin{
+ background: #d35400;
+}
+
+.turquoise{
+    background: #1abc9c;
+}
+
 .cs335, .cs426, .md303, .md352, .md313, .cs240 {
   font-weight: 300;
   cursor: pointer;

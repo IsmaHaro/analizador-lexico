@@ -87,7 +87,7 @@ function imprimir_resultado_final($resultado){
 		/*
 		 * Construir tabla
 		 */
-		$colors = array('blue', 'purple', 'navy', 'green', 'orange');
+		$colors = array('blue', 'purple', 'navy', 'green', 'orange', 'pumpkin', 'turquoise');
 
 		$tabla = '	<!DOCTPYE html>
 					<html>
