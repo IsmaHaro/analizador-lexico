@@ -79,6 +79,47 @@ $matriz_trancisiones = [1  => ["letra" => 2, "digito"  => 17, "," => 27, ";" => 
  */
 analizador_lexico($archivo);
 
+function imprimir_resultado_final($resultado){
+	if(php_sapi_name() == "cli"){
+		print_r($resultado);
+
+	}else{
+		/*
+		 * Construir tabla
+		 */
+		$colors = array('blue', 'purple', 'navy', 'green', 'orange');
+
+		$tabla = '	<!DOCTPYE html>
+					<html>
+					<head>
+						<meta charset="utf-8">
+						<title>Analizador Léxico</title>
+						<link rel="stylesheet" type="text/css" href="css/estilos.css">
+					</head>
+					<body>
+						<table>
+							<tr class="days">
+								<th>Token</th>
+								<th>Valor</th>
+							</tr>';
+
+		foreach($resultado as $elemento){
+			$color = $colors[array_rand($colors, 1)];
+
+			$tabla .= 	'<tr>'.
+							'<td class="'.$color.'">'.$elemento['token'].'</td>'.
+							'<td class="'.$color.'">'.$elemento['valor'].'</td>'.
+						'</tr>';
+		}
+
+		$tabla .= '		</table>
+					</body>
+					</html>';
+
+		echo $tabla;
+	}
+}
+
 function imprimir($valor){
 	if(is_array($valor)){
 		echo '<pre>';
@@ -187,7 +228,7 @@ function analizador_lexico($archivo){
         }
     }
 
-    imprimir($resultado);
+    imprimir_resultado_final($resultado);
 }
 
 function checar_tipo_caracter($char){
