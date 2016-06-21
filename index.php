@@ -1,5 +1,6 @@
 #!/usr/bin/php
 <?php
+$contador = 1;
 $archivo = file_get_contents('compiladores.txt');
 
 $palabras_reservadas = array ('leer', 'escribir', 'si', 'sino', 'finsi', 'para','finpara','mientras','finmientras',
@@ -25,7 +26,27 @@ $palabras_reservadas = array ('leer', 'escribir', 'si', 'sino', 'finsi', 'para',
 
 $simbolos = ['.', ',', ';', '<', '>', '=', '"', '+', '*', '-', '/', '&', '|', '~', '(', ')'];
 
-$otros = ["\n", " "];
+$otros = ["\n",
+			" ",
+		    "\0x000D000A", // [UNICODE] CR+LF: CR (U+000D) followed by LF (U+000A)
+			"\0x000A",     // [UNICODE] LF: Line Feed, U+000A
+	        "\0x000B",     // [UNICODE] VT: Vertical Tab, U+000B
+	        "\0x000C",     // [UNICODE] FF: Form Feed, U+000C
+	        "\0x000D",     // [UNICODE] CR: Carriage Return, U+000D
+	        "\0x0085",     // [UNICODE] NEL: Next Line, U+0085
+	        "\0x2028",     // [UNICODE] LS: Line Separator, U+2028
+	        "\0x2029",     // [UNICODE] PS: Paragraph Separator, U+2029
+	        "\0x0D0A",     // [ASCII] CR+LF: Windows, TOPS-10, RT-11, CP/M, MP/M, DOS, Atari TOS, OS/2, Symbian OS, Palm OS
+	        "\0x0A0D",     // [ASCII] LF+CR: BBC Acorn, RISC OS spooled text output.
+	        "\0x0A",       // [ASCII] LF: Multics, Unix, Unix-like, BeOS, Amiga, RISC OS
+	        "\0x0D",       // [ASCII] CR: Commodore 8-bit, BBC Acorn, TRS-80, Apple II, Mac OS <=v9, OS-9
+	        "\0x1E",       // [ASCII] RS: QNX (pre-POSIX)
+	        //"\0x76",       // [?????] NEWLINE: ZX80, ZX81 [DEPRECATED]
+	        "\0x15",
+			'lf',        // Code: \n
+			'cr',        // Code: \r
+			'lfcr',      // Code: \n \r
+			'crlf' ];
 
 $estados_aceptacion = [3  => "IDENTIFICADOR",
                        7  => "CADENA",
@@ -80,6 +101,8 @@ $matriz_trancisiones = [1  => ["letra" => 2, "digito"  => 17, "," => 27, ";" => 
 analizador_lexico($archivo);
 
 function imprimir_resultado_final($resultado){
+	global $contador;
+
 	if(php_sapi_name() == "cli"){
 		print_r($resultado);
 
@@ -87,7 +110,7 @@ function imprimir_resultado_final($resultado){
 		/*
 		 * Construir tabla
 		 */
-		$colors             = ["PALABRA_RESERVADA"     => "blue",
+		$colors             = ["PALABRA_RESERVADA"     => "navy",
 							   "IDENTIFICADOR"         => "blue",
 								"CADENA"               => "blue",
 								"COMENTARIO"           => "green",
@@ -137,7 +160,12 @@ function imprimir_resultado_final($resultado){
 						'</tr>';
 		}
 
-		$tabla .= '		</table>
+		$tabla .= 		'<tr>'.
+							'<td class="navy">Numero de Lineas</td>
+							<td class="navy">'.$contador.'</td>
+						</tr>
+
+					</table>
 					</body>
 					</html>';
 
@@ -243,6 +271,7 @@ function analizador_lexico($archivo){
 			if($tipo['tipo'] != "espacio"){
 				$token['valor'] = implode("", $elemento);
 				$token['token'] = "ERROR";
+				$token['linea'] = $tipo["linea"];
 				array_push($resultado, $token);
 			}
 
@@ -254,9 +283,15 @@ function analizador_lexico($archivo){
     imprimir_resultado_final($resultado);
 }
 
+
 function checar_tipo_caracter($char){
-    global $simbolos, $otros;
+    global $simbolos, $otros, $contador;
 	$result = array();
+	$result['linea'] = $contador;
+
+	if($char == "\n"){
+		$contador++;
+	}
 
     if(is_numeric($char)){
 		$result["valor"] = "digito";
