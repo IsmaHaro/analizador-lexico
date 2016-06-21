@@ -1,7 +1,11 @@
-#!/usr/bin/php
 <?php
 $contador = 1;
 $archivo = file_get_contents('compiladores.txt');
+
+if(!empty($_POST['codigo'])){
+	$contador = 1;
+	$archivo = trim($_POST['codigo'])."\n";
+}
 
 $palabras_reservadas = array ('leer', 'escribir', 'si', 'sino', 'finsi', 'para','finpara','mientras','finmientras',
                        'repetir','segun','con', 'paso', 'hacer','finsegun','hasta','algoritmo','inicio','entonces', 'hastaque');
@@ -101,7 +105,7 @@ $matriz_trancisiones = [1  => ["letra" => 2, "digito"  => 17, "," => 27, ";" => 
 analizador_lexico($archivo);
 
 function imprimir_resultado_final($resultado){
-	global $contador;
+	global $contador, $archivo;
 
 	if(php_sapi_name() == "cli"){
 		print_r($resultado);
@@ -145,6 +149,7 @@ function imprimir_resultado_final($resultado){
 						<link rel="stylesheet" type="text/css" href="css/estilos.css">
 					</head>
 					<body>
+						<h1>Analizador Léxico</h1>
 						<table>
 							<tr class="days">
 								<th>Token</th>
@@ -173,10 +178,18 @@ function imprimir_resultado_final($resultado){
 
 		$tabla .= 		'<tr>'.
 							'<td class="navy">Numero de Lineas</td>
-							<td class="navy">'.$contador.'</td>
+							<td class="navy">'.--$contador.'</td>
 						</tr>
-
 					</table>
+
+					<form method="POST">
+						<h2>Código</h2>
+						<br>
+						<textarea name="codigo">'.$archivo.'</textarea>
+						<br>
+						<input type="submit" value="Actualizar">
+					</form>
+
 					</body>
 					</html>';
 
