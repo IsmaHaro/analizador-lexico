@@ -151,10 +151,14 @@ function imprimir_resultado_final($resultado){
 								<th>Valor</th>
 							</tr>';
 
+		$i = 0;
+		$num = count($resultado);
 		foreach($resultado as $elemento){
 			$color = $colors[$elemento['token']];
 
-			if($elemento['token'] == "ERROR"){
+			if(++$i == $num){
+
+			}elseif($elemento['token'] == "ERROR"){
 				$tabla .= 	'<tr>'.
 								'<td class="'.$color.'">'.$elemento['token'].'</td>'.
 								'<td class="'.$color.'">Error en línea: '.$elemento['linea'].'</td>'.
