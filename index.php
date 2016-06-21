@@ -87,7 +87,32 @@ function imprimir_resultado_final($resultado){
 		/*
 		 * Construir tabla
 		 */
-		$colors = array('blue', 'purple', 'navy', 'green', 'orange', 'pumpkin', 'turquoise');
+		$colors             = ["PALABRA_RESERVADA"     => "blue",
+							   "IDENTIFICADOR"         => "blue",
+								"CADENA"               => "blue",
+								"COMENTARIO"           => "green",
+								"OP_DIVISION"          => "pumpkin",
+								"ENTERO"               => "turquoise",
+								"OP_SUMA"              => "pumpkin",
+								"OP_INCREMENTO"        => "pumpkin",
+								"OP_RESTA"             => "pumpkin",
+								"OP_DECREMENTO"        => "pumpkin",
+								"ASIGNACION"           => "pumpkin",
+								"OP_MULTIPLICACION"    => "pumpkin",
+								"COMA"                 => "orange",
+								"PUNTO_COMA"           => "orange",
+								"MAYOR_QUE"            => "orange",
+								"MAYOR_IGUAL_QUE"      => "orange",
+								"MENOR_QUE"            => "orange",
+								"MENOR_IGUAL_QUE"      => "orange",
+								"DIFERENTE_DE"         => "orange",
+								"AND"                  => "navy",
+								"OR"			       => "navy",
+								"NOT"                  => "navy",
+								"FLOTANTE"             => "turquoise",
+								"PARENTESIS_IZQUIERDO" => "orange",
+								"PARENTESIS_DERECHO"   => "orange",
+								"ERROR"                => "red"];
 
 		$tabla = '	<!DOCTPYE html>
 					<html>
@@ -104,7 +129,7 @@ function imprimir_resultado_final($resultado){
 							</tr>';
 
 		foreach($resultado as $elemento){
-			$color = $colors[array_rand($colors, 1)];
+			$color = $colors[$elemento['token']];
 
 			$tabla .= 	'<tr>'.
 							'<td class="'.$color.'">'.$elemento['token'].'</td>'.
@@ -162,10 +187,10 @@ function analizador_lexico($archivo){
          */
         $tipo = checar_tipo_caracter($char);
 
-        if(array_key_exists($tipo, $matriz_trancisiones[$estado])){
+        if(array_key_exists($tipo["valor"], $matriz_trancisiones[$estado])){
             array_push($elemento, $char);
 			$estadoA = $estado;
-            $estado  = $matriz_trancisiones[$estado][$tipo];
+            $estado  = $matriz_trancisiones[$estado][$tipo["valor"]];
             /*
              * Checar si es un estado de aceptacion
              */
@@ -212,16 +237,14 @@ function analizador_lexico($archivo){
             }
 
         }else{
-            /*
-             * Imprimir el elemento (token, valor)
-             */
-            //imprimir("----------------------------------------");
-            //imprimir("ERROR");
-            //imprimir($elemento);
-            //imprimir("----------------------------------------");
-            $token['valor'] = implode("", $elemento);
-            $token['token'] = "ERROR";
-            array_push($resultado, $token);
+			/*
+			 * Si el tipo es un espacio entonces omitir mostrar el error
+			 */
+			if($tipo['tipo'] != "espacio"){
+				$token['valor'] = implode("", $elemento);
+				$token['token'] = "ERROR";
+				array_push($resultado, $token);
+			}
 
             $estado   = 1;
             $elemento = array();
@@ -233,21 +256,27 @@ function analizador_lexico($archivo){
 
 function checar_tipo_caracter($char){
     global $simbolos, $otros;
+	$result = array();
 
     if(is_numeric($char)){
-        return "digito";
+		$result["valor"] = "digito";
+	    return $result;
     }
 
     if(in_array($char, $simbolos)){
-        return $char;
+		$result["valor"] = $char;
+        return $result;
     }
 
     if(in_array($char, $otros)){
-        return "otro";
+		$result["valor"] = "otro";
+		$result["tipo"]  = "espacio";
+        return $result;
     }
 
     if(is_string($char)){
-        return "letra";
+		$result["valor"] = "letra";
+        return $result;
     }
 }
 
