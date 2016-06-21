@@ -154,10 +154,17 @@ function imprimir_resultado_final($resultado){
 		foreach($resultado as $elemento){
 			$color = $colors[$elemento['token']];
 
-			$tabla .= 	'<tr>'.
-							'<td class="'.$color.'">'.$elemento['token'].'</td>'.
-							'<td class="'.$color.'">'.$elemento['valor'].'</td>'.
-						'</tr>';
+			if($elemento['token'] == "ERROR"){
+				$tabla .= 	'<tr>'.
+								'<td class="'.$color.'">'.$elemento['token'].'</td>'.
+								'<td class="'.$color.'">Error en línea: '.$elemento['linea'].'</td>'.
+							'</tr>';
+			}else{
+				$tabla .= 	'<tr>'.
+								'<td class="'.$color.'">'.$elemento['token'].'</td>'.
+								'<td class="'.$color.'">'.$elemento['valor'].'</td>'.
+							'</tr>';
+			}
 		}
 
 		$tabla .= 		'<tr>'.
