@@ -5,4 +5,5 @@ Mientras (a<>0) Hacer
  Escribir "Ingrese otro número (0 para salir)";
  Leer a;
 FinMientras
+.8.9
 Escribir "Total:",Tot;

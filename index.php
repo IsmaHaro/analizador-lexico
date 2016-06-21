@@ -2,8 +2,8 @@
 <?php
 $archivo = file_get_contents('compiladores.txt');
 
-$palabras_reservadas = ['leer', 'escribir', 'si', 'sino', 'finsi', 'para','finpara','mientras','finmientras',
-                       'repetir','segun','hacer','finsegun','hasta','algoritmo','inicio','entonces', 'hastaque'];
+$palabras_reservadas = array ('leer', 'escribir', 'si', 'sino', 'finsi', 'para','finpara','mientras','finmientras',
+                       'repetir','segun','con', 'paso', 'hacer','finsegun','hasta','algoritmo','inicio','entonces', 'hastaque');
 
 //$posiciones_simbolos = ['letra' => 0,
 //                        'digito' => 1,
@@ -183,7 +183,7 @@ function analizador_lexico($archivo){
                  * si es o no una palabra reservada
                  */
                 if($token['token'] == "IDENTIFICADOR"){
-                    if(in_array(strtolower($token['valor']), $palabras_reservadas)){
+                    if(in_array(trim(strtolower($token['valor'])), $palabras_reservadas)){
                         $token['token'] = "PALABRA_RESERVADA";
                     }
                 }

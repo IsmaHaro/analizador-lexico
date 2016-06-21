@@ -1,0 +1,4 @@
+Escribir "Números pares de 10 a 20:";
+Para a<-10 Hasta 20 Con Paso 2 Hacer
+ Escribir a;
+FinPara
