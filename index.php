@@ -176,6 +176,10 @@ function imprimir_resultado_final($resultado){
 			}
 		}
 
+		if(!empty($_POST['codigo'])){
+			--$contador;
+		}
+
 		$tabla .= 		'<tr>'.
 							'<td class="navy">Numero de Lineas</td>
 							<td class="navy">'.--$contador.'</td>
