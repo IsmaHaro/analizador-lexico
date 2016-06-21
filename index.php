@@ -3,7 +3,7 @@ $contador = 1;
 $archivo = file_get_contents('compiladores.txt');
 
 if(!empty($_POST['codigo'])){
-	$contador = 1;
+	$contador = 0;
 	$archivo = trim($_POST['codigo'])."\n";
 }
 
@@ -174,10 +174,6 @@ function imprimir_resultado_final($resultado){
 								'<td class="'.$color.'">'.$elemento['valor'].'</td>'.
 							'</tr>';
 			}
-		}
-
-		if(!empty($_POST['codigo'])){
-			--$contador;
 		}
 
 		$tabla .= 		'<tr>'.
