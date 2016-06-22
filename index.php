@@ -1,14 +1,15 @@
 <?php
-$contador = 1;
+$contador = 0;
 $archivo = file_get_contents('compiladores.txt');
 
-if(!empty($_POST['codigo'])){
+if(!empty($_FILES['archivo']["tmp_name"])){
 	$contador = 0;
-	$archivo = trim($_POST['codigo'])."\n";
+	//$archivo = trim($_POST['codigo'])."\n";
+	$archivo = file_get_contents($_FILES["archivo"]["tmp_name"]);
 }
 
 $palabras_reservadas = array ('leer', 'escribir', 'si', 'sino', 'finsi', 'para','finpara','mientras','finmientras',
-                       'repetir','segun','con', 'paso', 'hacer','finsegun','hasta','algoritmo','inicio','entonces', 'hastaque');
+                       'repetir','segun','con', 'paso', 'hacer','finsegun','hasta','algoritmo','inicio','entonces', 'hastaque', 'fin');
 
 //$posiciones_simbolos = ['letra' => 0,
 //                        'digito' => 1,
@@ -176,17 +177,16 @@ function imprimir_resultado_final($resultado){
 			}
 		}
 
-		$tabla .= 		'<tr>'.
-							'<td class="navy">Numero de Lineas</td>
-							<td class="navy">'.--$contador.'</td>
-						</tr>
+		$tabla .= 		'
 					</table>
 
-					<form method="POST">
+					<form method="POST" enctype="multipart/form-data">
 						<h2>Código</h2>
 						<br>
 						<textarea name="codigo">'.$archivo.'</textarea>
 						<br>
+
+						<input type="file" name="archivo" id="archivo">
 						<input type="submit" value="Actualizar">
 					</form>
 
@@ -277,7 +277,12 @@ function analizador_lexico($archivo){
                 //imprimir("ACEPTADO");
                 //imprimir($token);
                 //imprimir("----------------------------------------");
-                array_push($resultado, $token);
+				if(!empty(trim($token['valor']))){
+					array_push($resultado, $token);
+
+				}elseif($token['valor'] == "0"){
+					array_push($resultado, $token);
+				}
 
                 /*
                  * Vaciar elemento para volver a construir otro

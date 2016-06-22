@@ -1,9 +1,12 @@
+Algoritmo a2
+//Inicio a
 Escribir "Ingrese un número (0 para salir)";
-Leer a;
+Leer .a;
 Mientras (a<>0) Hacer
  Tot <- Tot+a;
  Escribir "Ingrese otro número (0 para salir)";
  Leer a;
 FinMientras
-.8.9
+8.9
 Escribir "Total:",Tot;
+Fin
